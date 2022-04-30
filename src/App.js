@@ -1,5 +1,5 @@
 function App() {
-  return <></>;
+  return <>Cuando llega</>;
 }
 
 export default App;
