@@ -18,7 +18,7 @@ const Arribos = () => {
 
   return (
     <>
-      <h1>Arribos</h1>
+      <h1>{`Arribos a ${parada.Descripcion}`} </h1>
       {isLoading ? (
         <h1>Cargando</h1>
       ) : (
