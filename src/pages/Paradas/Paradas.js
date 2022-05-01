@@ -3,6 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { paradasActions } from "../../store/paradasSlice";
 import { useParadasQuery } from "../../queries/useParadasQuery";
+import Title from "../../components/Title/Title";
+import Grid from "@mui/material/Grid";
+import Item from "../../components/Item/Item";
+import Button from "@mui/material/Button";
+import HomeIcon from "@mui/icons-material/Home";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Stack from "@mui/material/Stack";
 
 const Paradas = () => {
   const dispatch = useDispatch();
@@ -12,7 +19,7 @@ const Paradas = () => {
   const interseccion = useSelector(state => state.interseccionesStore.interseccionSeleccionada);
   const { data, error, isLoading } = useParadasQuery(linea, calle, interseccion);
 
-  function onCalleSelectedHandler(event) {
+  function onParadaSelectedHandler(event) {
     event.preventDefault();
     dispatch(paradasActions.reemplazarParadaSeleccionada({ paradaSeleccionada: this }));
     navigate(`/arribos`);
@@ -21,30 +28,35 @@ const Paradas = () => {
   if (error || !calle || !linea || !interseccion) {
     return (
       <>
-        <h1>Error</h1>
-        <Link to={"/"}>Inicio</Link>
+        <Title>Volver a Inicio</Title>
+        <Button component={Link} to="/" variant="contained" color="primary" startIcon={<HomeIcon />}>
+          Inicio
+        </Button>
       </>
     );
   }
 
   return (
     <>
-      <h1>Paradas</h1>
+      <Title>{`Paradas - Linea ${linea.Descripcion} - Calle ${calle.Descripcion.split("-")[0].trim()} y ${interseccion.Descripcion.split("-")[0].trim()}`}</Title>
+      <Stack direction="row" spacing={2} sx={{ marginBottom: "2em" }}>
+        <Button component={Link} to="/" variant="contained" color="primary" startIcon={<HomeIcon />}>
+          Inicio
+        </Button>
+        <Button component={Link} to="/intersecciones" variant="contained" color="primary" startIcon={<ArrowBackIcon />}>
+          Intersecciones
+        </Button>
+      </Stack>
       {isLoading ? (
         <h1>Cargando</h1>
       ) : (
-        <>
-          <Link to={"/"}>Inicio</Link>
-          <ul>
-            {data.map((parada, index) => (
-              <li key={index}>
-                <a href="/" onClick={onCalleSelectedHandler.bind(parada)}>
-                  {`${parada.Identificador} - ${parada.Descripcion}`}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>
+        <Grid container direction="column" spacing={2} justifyContent="center" sx={{ marginBottom: "2em" }}>
+          {data.map((parada, index) => (
+            <Grid item key={index} sx={{ cursor: "pointer" }} onClick={onParadaSelectedHandler.bind(parada)}>
+              <Item>{`${parada.Identificador} - ${parada.Descripcion}`}</Item>
+            </Grid>
+          ))}
+        </Grid>
       )}
     </>
   );

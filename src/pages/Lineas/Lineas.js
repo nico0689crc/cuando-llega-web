@@ -2,6 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { lineasActions } from "../../store/lineasSlice";
 import { useLineasQuery } from "../../queries/useLineasQuery";
+import Grid from "@mui/material/Grid";
+import Title from "../../components/Title/Title";
+import Item from "../../components/Item/Item";
 
 const Lineas = () => {
   const dispatch = useDispatch();
@@ -20,18 +23,17 @@ const Lineas = () => {
 
   return (
     <>
+      <Title>Lineas de transporte</Title>
       {isLoading ? (
         <h1>Cargando</h1>
       ) : (
-        <ul>
+        <Grid container direction="column" spacing={3} justifyContent="center">
           {data.map((linea, index) => (
-            <li key={index}>
-              <a href="/" onClick={onLineaSelectedHandler.bind(linea)}>
-                {linea.Descripcion}
-              </a>
-            </li>
+            <Grid item key={index} sx={{ cursor: "pointer" }} onClick={onLineaSelectedHandler.bind(linea)}>
+              <Item>{linea.Descripcion}</Item>
+            </Grid>
           ))}
-        </ul>
+        </Grid>
       )}
     </>
   );
