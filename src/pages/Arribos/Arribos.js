@@ -57,7 +57,7 @@ const Arribos = () => {
                     {`${arribo.Arribo}`}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {`CHOFER: ${arribo.IdentificadorChofer}`}
+                    {`Chofer: ${arribo.IdentificadorChofer}`}
                   </Typography>
                 </CardContent>
               </Card>
